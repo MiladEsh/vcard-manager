@@ -1,5 +1,7 @@
+using Moq;
 using VCardManager.Core;
 using VCardManager.Core.Interfaces;
+using VCardManager.Core.Models;
 
 namespace VCardManager.Tests;
 
@@ -18,18 +20,43 @@ public class MenuTests
         // Act
         menu.Run();
 
-        // Controleert of het menu werd getoond
+        // Assert: controleert of het menu werd getoond
         Assert.Contains(spy.Output, line => line.Contains("VCard Manager"));
 
-        // Controleren NIET op "exit" in de output, want dat wordt niet geprint
+        // We controleren niet op "exit" in output, want dat wordt niet geprint
     }
 
+    [Fact]
+    public void Run_NieuwContactToevoegen_RoeptAddContactAan()
+    {
+        // Arrange
+        var mockService = new Mock<IVCardService>();
+        var spy = new ConsoleSpy();
+
+        // Simuleer invoer voor nieuw contact
+        spy.AddInput("2");                  // optie: nieuw contact
+        spy.AddInput("Jan");                // voornaam
+        spy.AddInput("Jansen");             // achternaam
+        spy.AddInput("0470000000");         // telefoon
+        spy.AddInput("jan@example.com");    // e-mail
+        spy.AddInput("6");                  // stoppen
+
+        var menu = new Menu(mockService.Object, spy);
+
+        // Act
+        menu.Run();
+
+        // Assert: AddContact moet zijn aangeroepen
+        mockService.Verify(s => s.AddContact(It.IsAny<VCardContact>()), Times.Once);
+    }
+
+    // Dummy voor de eerste test
     private class DummyService : IVCardService
     {
-        public void AddContact(Core.Models.VCardContact contact) { }
+        public void AddContact(VCardContact contact) { }
         public bool DeleteContact(string fullName) => false;
         public bool ExportContact(string fullName, string filePath) => false;
-        public List<Core.Models.VCardContact> GetAllContacts() => new();
-        public Core.Models.VCardContact? SearchContact(string name) => null;
+        public List<VCardContact> GetAllContacts() => new();
+        public VCardContact? SearchContact(string name) => null;
     }
 }
