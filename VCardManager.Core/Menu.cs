@@ -1,5 +1,4 @@
-﻿using VCardManager.Core.Interfaces;
-using VCardManager.Core.Models;
+﻿using VCardManager.Core.Models;
 
 namespace VCardManager.Core;
 

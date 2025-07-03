@@ -1,6 +1,5 @@
 using Moq;
 using VCardManager.Core;
-using VCardManager.Core.Interfaces;
 using VCardManager.Core.Models;
 
 namespace VCardManager.Tests;

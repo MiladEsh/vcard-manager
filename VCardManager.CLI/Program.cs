@@ -1,7 +1,5 @@
 ﻿using VCardManager.CLI;
 using VCardManager.Core.Interfaces;
-using VCardManager.Core.Repositories;
-using VCardManager.Core.Services;
 using VCardManager.Core;
 
 // Pad naar het .vcf-bestand waar alle contacten worden opgeslagen
