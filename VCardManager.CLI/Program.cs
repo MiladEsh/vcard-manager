@@ -1,6 +1,19 @@
 ﻿using VCardManager.CLI;
 using VCardManager.Core.Interfaces;
 using VCardManager.Core;
+using Microsoft.Extensions.DependencyInjection;
+
+var services = new ServiceCollection();
+services.AddTransient<IConsole, SystemConsole>();
+services.AddTransient<IFileStore, FileSystemStore>();
+services.AddTransient<IVCardRepository, VCardFileRepository>();
+services.AddTransient<IVCardService, VCardService>();
+services.AddTransient<IMenu, Menu>();
+
+services.BuildServiceProvider()
+    .GetRequiredService<IMenu>()
+    .Run();
+
 
 // Pad naar het .vcf-bestand waar alle contacten worden opgeslagen
 const string filePath = "data/contacts.vcf";

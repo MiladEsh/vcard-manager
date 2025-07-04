@@ -26,10 +26,19 @@ public interface IVCardService
     bool ExportContact(string fullName, string filePath);
 }
 
+public interface IVCardService1
+{
+    void AddContact(VCardContact contact);
+    bool DeleteContact(string fullName);
+    bool ExportContact(string fullName, string filePath);
+    List<VCardContact> GetAllContacts();
+    VCardContact? SearchContact(string name);
+}
+
 // Deze klasse vormt de logische laag (service-laag) en implementeert IVCardService.
 // Ze coördineert acties zoals toevoegen, zoeken, verwijderen en exporteren van contacten,
 // door gebruik te maken van een repository (data-opslag).
-public class VCardService : IVCardService
+public class VCardService : IVCardService, IVCardService1
 {
     private readonly IVCardRepository repository;
 

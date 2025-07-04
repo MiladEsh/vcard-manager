@@ -22,9 +22,18 @@ public interface IVCardRepository
     void ExportToFile(VCardContact contact, string filePath);
 }
 
+public interface IVCardFileRepository
+{
+    void Add(VCardContact contact);
+    void Delete(string fullName);
+    void ExportToFile(VCardContact contact, string exportPath);
+    VCardContact? FindByName(string name);
+    List<VCardContact> GetAll();
+}
+
 // Deze klasse implementeert IVCardRepository en slaat contacten op in een .vcf-bestand.
 // Ze maakt gebruik van een IFileStore (voor I/O abstractie) zodat dit testbaar blijft.
-public class VCardFileRepository : IVCardRepository
+public class VCardFileRepository : IVCardRepository, IVCardFileRepository
 {
     private readonly string filePath;      // Pad naar contacts.vcf
     private readonly IFileStore fileStore; // Abstractie van bestandstoegang

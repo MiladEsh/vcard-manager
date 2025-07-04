@@ -2,8 +2,15 @@
 
 namespace VCardManager.Core;
 
+public interface IMenu
+{
+    void Run();
+}
+
+
+
 // De Menu-klasse is verantwoordelijk voor alle gebruikersinteractie in de console.
-public class Menu
+public class Menu : IMenu
 {
     private readonly IVCardService _service; // logica-laag, toegang tot contacten
     private readonly IConsole _console;     // abstractielaag voor System.Console
