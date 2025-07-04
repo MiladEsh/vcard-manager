@@ -49,6 +49,64 @@ public class MenuTests
         mockService.Verify(s => s.AddContact(It.IsAny<VCardContact>()), Times.Once);
     }
 
+    [Fact]
+    public void Run_ZoekContact_RoeptSearchContactAan()
+    {
+        // Arrange
+        var mockService = new Mock<IVCardService>();
+        var spy = new ConsoleSpy();
+
+        // Simuleer invoer voor zoeken
+        spy.AddInput("3");                  // optie: zoek contact
+        spy.AddInput("Jan Jansen");         // naam om te zoeken
+        spy.AddInput("6");                  // stoppen
+
+        var menu = new Menu(mockService.Object, spy);
+
+        // Act
+        menu.Run();
+
+        // Assert: SearchContact moet zijn aangeroepen met de juiste naam
+        mockService.Verify(s => s.SearchContact("Jan Jansen"), Times.Once);
+    }
+    
+    [Fact]
+    public void Run_VerwijderContact_RoeptDeleteContactAan()
+    {
+        // Arrange
+        var mockService = new Mock<IVCardService>();
+        var spy = new ConsoleSpy();
+        // Simuleer invoer voor verwijderen
+        spy.AddInput("4");                  // optie: verwijder contact
+        spy.AddInput("Jan Jansen");         // naam om te verwijderen
+        spy.AddInput("6");                  // stoppen      
+        var menu = new Menu(mockService.Object, spy);
+        // Act
+        menu.Run();
+        // Assert: DeleteContact moet zijn aangeroepen met de juiste naam
+        mockService.Verify(s => s.DeleteContact("Jan Jansen"), Times.Once);
+    }
+
+    [Fact]
+    public void Run_ExporteerContact_RoeptExportContactAan()
+    {
+        // Arrange
+        var mockService = new Mock<IVCardService>();
+        var spy = new ConsoleSpy();
+        // Simuleer invoer voor exporteren
+        spy.AddInput("5");                  // optie: exporteer contact
+        spy.AddInput("Jan Jansen");         // naam om te exporteren
+        spy.AddInput("data/jan_jansen.vcf"); // export pad
+        spy.AddInput("6");                  // stoppen
+        var menu = new Menu(mockService.Object, spy);
+        // Act
+        menu.Run();
+        // Assert: ExportContact moet zijn aangeroepen met de juiste naam en pad
+        mockService.Verify(s => s.ExportContact("Jan Jansen", "data/jan_jansen.vcf"), Times.Once);
+    }
+
+
+
     // Dummy voor de eerste test
     private class DummyService : IVCardService
     {

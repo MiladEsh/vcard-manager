@@ -39,9 +39,9 @@ public class VCardFileRepository : IVCardRepository, IVCardFileRepository
     private readonly IFileStore fileStore; // Abstractie van bestandstoegang
 
     // Constructor krijgt pad en fileStore mee via dependency injection
-    public VCardFileRepository(string filePath, IFileStore fileStore)
+    public VCardFileRepository( IFileStore fileStore)
     {
-        this.filePath = filePath;
+        this.filePath = "data/contacts.vcf";
         this.fileStore = fileStore;
     }
 

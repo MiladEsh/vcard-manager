@@ -1,4 +1,5 @@
-﻿using VCardManager.Core.Models;
+﻿using System.Text.RegularExpressions;
+using VCardManager.Core.Models;
 
 namespace VCardManager.Core;
 
@@ -83,7 +84,7 @@ public class Menu : IMenu
         // Toon elk contact in één regel
         foreach (var c in contacten)
         {
-            _console.WriteLine($"- {c.FullName} | Tel: {c.Phone} | Email: {c.Email}");
+            _console.WriteLine($"{c.FullName}: {c.Email}, {c.Phone}");
         }
     }
 
@@ -96,8 +97,19 @@ public class Menu : IMenu
         _console.Write("Achternaam: ");
         var last = _console.ReadLine();
 
-        _console.Write("Telefoonnummer: ");
-        var phone = _console.ReadLine();
+        string phone;
+        while (true)
+        {
+            _console.Write("Telefoonnummer: ");
+            phone = _console.ReadLine();
+
+            var geldig = Regex.IsMatch(phone, @"^0?4\d{2}([./]?\d{2}){3}$");
+            if (geldig)
+                break;
+
+            _console.WriteLine("Ongeldig telefoonnummer. Probeer opnieuw.");
+
+        }
 
         _console.Write("E-mailadres: ");
         var email = _console.ReadLine();
